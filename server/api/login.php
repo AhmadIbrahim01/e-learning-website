@@ -2,6 +2,11 @@
 
 include "connection.php";
 
+require "vendor/autoload.php";
+
+use Firebase\JWT\JWT;
+
+$secretKey = "Freedom";
 $email = $_POST["email"];
 $password = $_POST["password"];
 
@@ -18,9 +23,17 @@ if($result->num_rows != 0){
     $check = password_verify($password, $user["password"]);
 
     if($check){
+
+        $payload = [
+            "userId" => $user["id"]
+        ]
+
+        $token = JWT::encode($payload, $secretKey, "HS256");
+
         echo json_encode([
             "status" => "Successful",
             "message" => $user,
+            "access_token" => $token,
         ]);
         
     } else {
