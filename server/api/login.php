@@ -6,9 +6,22 @@ require "vendor/autoload.php";
 
 use Firebase\JWT\JWT;
 
+$data = json_decode(file_get_contents("php://input"),true);
+
 $secretKey = "Freedom";
-$email = $_POST["email"];
-$password = $_POST["password"];
+
+$email = $data["email"] ?? null;
+$password = $data["password"] ?? null;
+
+
+if ($email == null || $password == null) {
+    echo json_encode([
+        "message" => "Credentials are required",
+    ]);
+
+    return;
+}
+
 
 $query = $connection->prepare("SELECT * FROM users WHERE email = ?");
 $query->bind_param("s", $email);
@@ -26,7 +39,7 @@ if($result->num_rows != 0){
 
         $payload = [
             "userId" => $user["id"]
-        ]
+        ];
 
         $token = JWT::encode($payload, $secretKey, "HS256");
 

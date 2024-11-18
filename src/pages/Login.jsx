@@ -28,21 +28,32 @@ const Login = ()=>{
             
             <Button text={"Login"} onClick={async ()=>{
 
-                const data = new FormData();
+                // const data = new FormData();
 
-                data.append("email", email);
-                data.append("password", password);
+                // data.append("email", email);
+                // data.append("password", password);
 
                 try{
                     const result = await axios.post("http://localhost/e-learning-website/server/api/login.php",
-                        data
-                    );
-                    
-                    console.log(result)
+                    {
+                        email,
+                        password,
+                    },
+                    {
+                        headers:{
+                            "Content-Type": "application/json",
+                        },
 
-                    if (result.ok) {
-                        navigate("/register");
                     }
+                    )
+                    
+                    // console.log(result)
+
+                    // if (result.ok) {
+                    //     navigate("/register");
+                    // }
+
+                    localStorage.setItem("token",$result.data.access_token);
 
                 } catch (error){
                     console.log(error);
