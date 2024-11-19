@@ -19,7 +19,7 @@ const Courses = ()=>{
             
             );
 
-            
+
             
             
         } catch (error) {
