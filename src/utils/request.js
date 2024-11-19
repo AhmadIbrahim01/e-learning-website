@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost/backend";
+axios.defaults.baseURL = "http://localhost/e-learning-website/server/api/";
 // axios.defaults.headers.Authorization = localStorage.token
 
 export const requestApi = async ({ route, method = "GET", body }) => {
@@ -17,9 +17,8 @@ export const requestApi = async ({ route, method = "GET", body }) => {
 
     return response.data;
   } catch (error) {
-    console.log("======== Error =========");
+    console.log("Error");
     console.log(error.response.data.message);
-    console.log("======== // =========");
 
     throw error;
   }

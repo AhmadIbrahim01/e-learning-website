@@ -13,49 +13,56 @@ const Login = ()=>{
 
 
     return(
-        <div>
-            <h1>Login</h1>
+        <div className="flex login">
+            <div className="login-form flex column center">
+                <h1>Login</h1>
 
-            <Input placeholder={"Email"} onChange={(e)=>{
-                setEmail(e.target.value);
-            }} />
-            
-            <Input placeholder={"Password"} onChange={(e)=>{
-                setPassword(e.target.value);
-            }} />
-            
-            <Button text={"Login"} onClick={async ()=>{
+                <Input placeholder={"Email"} onChange={(e)=>{
+                    setEmail(e.target.value);
+                }} />
+                
+                <Input placeholder={"Password"} onChange={(e)=>{
+                    setPassword(e.target.value);
+                }} />
+                
+                <Button text={"Login"} onClick={async ()=>{
 
 
-                try{
-                    const result = await axios.post("http://localhost/e-learning-website/server/api/login.php",
-                    {
-                        email: email,
-                        password: password,
-                    },
-                    {
-                        headers:{
-                            "Content-Type": "application/json",
+                    try{
+                        const result = await axios.post("http://localhost/e-learning-website/server/api/login.php",
+                        {
+                            email: email,
+                            password: password,
                         },
+                        {
+                            headers:{
+                                "Content-Type": "application/json",
+                            },
 
+                        }
+                        );
+                        
+
+
+                        // console.log(result)
+                        // console.log(result.data)
+                        // console.log(result.data.access_token)
+
+                        // console.log(email,password)
+
+                        navigate("/courses");
+
+                        localStorage.setItem("token", result.data.access_token);
+
+                    } catch (error){
+                        console.log(error);
                     }
-                    );
-                    
 
-
-                    // console.log(result)
-                    // console.log(result.data)
-                    // console.log(result.data.access_token)
-
-                    navigate("/courses");
-
-                    localStorage.setItem("token", result.data.access_token);
-
-                } catch (error){
-                    console.log(error);
-                }
-
-            }}/>
+                }}/>
+            </div>
+            <div className="picture">
+                
+            </div>
         </div>
     )
 }

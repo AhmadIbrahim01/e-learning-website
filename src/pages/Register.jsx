@@ -57,6 +57,10 @@ const Register = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name:</label>
+
+
+
+
           <input
             type="text"
             id="name"

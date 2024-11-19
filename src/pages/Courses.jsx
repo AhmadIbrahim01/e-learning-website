@@ -1,47 +1,38 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
-const Courses = ()=>{
-
-    const navigate = useNavigate();
-
-    const getCourses = async () =>{
-        try {
-            const result = await axios.get(
-                "http://localhost/e-learning-website/server/api/getUserCourses.php",
-                {
-                    headers:{
-                        Authorization: localStorage.token,
-                    },
-                }
-            
-            );
+const Courses = () => {
 
 
-            
-            
-        } catch (error) {
-            if (error.response.status === 401){
-                localStorage.clear();
-                navigate("/");
-            }
-            
+  const getCourses = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost/e-learning-website/server/api/getUserCourses.php",
+        {
+          headers: {
+            Authorization: localStorage.token,
+          },
         }
+      );
+
+      console.log(result.data);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-    useEffect(()=>{
-        getCourses();
-        
-    }, [])
+  useEffect(() => {
+    getCourses();
 
+    console.log("Here");
+  }, []);
 
-    return(
-        <div>
-            <h1>Courses</h1>
-        </div>
-    )
-}
+  return (
+    <div>
+        <h1>Courses</h1>
+    </div>
+  );
+};
 
 export default Courses;
