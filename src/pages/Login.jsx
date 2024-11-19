@@ -47,7 +47,7 @@ const Login = ()=>{
                     // console.log(result.data)
                     // console.log(result.data.access_token)
 
-                    navigate("/");
+                    navigate("/courses");
 
                     localStorage.setItem("token", result.data.access_token);
 

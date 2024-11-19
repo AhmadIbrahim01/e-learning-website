@@ -8,7 +8,7 @@ use Firebase\JWT\JWT;
 
 $data = json_decode(file_get_contents("php://input"),true);
 
-$secretKey = "Freedom";
+$secretKey = "MyTopSecretKey";
 
 $email = $data["email"] ?? null;
 $password = $data["password"] ?? null;
