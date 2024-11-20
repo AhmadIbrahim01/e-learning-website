@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Button from "../components/base/Button";
-import Input from "../components/base/Input";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -98,7 +96,7 @@ const Register = () => {
                             />
                     </div>
                     <div>
-                        <select
+                        {/* <select
                             id="user_type"
                             name="user_type"
                             value={formData.user_type}
@@ -108,7 +106,7 @@ const Register = () => {
                             >
                             <option value="student">Student</option>
                             <option value="instructor">Instructor</option>
-                        </select>
+                        </select> */}
                     </div>
                     <button className='register-button' type="submit">Register</button>
                 </form>

@@ -37,10 +37,12 @@ const Login = () => {
               const result = await axios.post(
                 "http://localhost/e-learning-website/server/api/login.php",
                 {
+                  // the sent data is stringified
                   email: email,
                   password: password,
                 },
                 {
+                  // To tell the backend that the data i sent is json
                   headers: {
                     "Content-Type": "application/json",
                   },

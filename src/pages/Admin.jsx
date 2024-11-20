@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { logout } from "../utils/auth";
+import ManageStudents from "./ManageStudents";
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
@@ -69,7 +70,8 @@ const Admin = () => {
     <div>
       <h1>Admin Dashboard</h1>
       <button onClick={logout}>Logout</button>
-      
+      <a href="/ManageStudents">manage students</a>
+
       {error && <p className="error-message">{error}</p>}
       {loading ? (
         <p>Loading users...</p>
@@ -112,6 +114,9 @@ const Admin = () => {
             )}
           </tbody>
         </table>
+
+        <ManageStudents />
+
         </>)}
     </div>
   );
