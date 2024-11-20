@@ -28,6 +28,36 @@ const AllUsers = ({ users = [] }) => {
     }
   };
 
+
+const changeUserType = async (userId, currentUserType) => {
+    const newUserType = currentUserType === "instructor" ? "student" : "instructor";
+
+    const data = new FormData();
+    data.append("id",userId);
+    data.append("user_type",newUserType);
+
+    try {
+      const response = await axios.post("http://localhost/e-learning-website/server/api/changeUserType.php", data);
+
+      if (response.data.status === "success") {
+        setUpdatedUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === userId
+              ? { ...user, user_type: newUserType }
+              : user
+          )
+        );
+      } else {
+        alert("Failed to change user type. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error changing user type:", error);
+      alert("An error occurred. Please try again.");
+    }
+  };
+
+
+
   return (
     <div>
       <h2>All Users</h2>
@@ -54,6 +84,13 @@ const AllUsers = ({ users = [] }) => {
                 <td>
                   {user.is_banned === "0" && (
                     <button onClick={() => banUser(user.id)}>Ban</button>
+                  )}
+                </td>
+                <td>
+                  {user.is_banned === "0" && user.user_type != "admin" && (
+                    <button onClick={() => changeUserType(user.id, user.user_type)}>
+                      Change to {user.user_type === "instructor" ? "student" : "Instructor"}
+                    </button>
                   )}
                 </td>
               </tr>
