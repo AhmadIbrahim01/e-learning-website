@@ -18,7 +18,6 @@ const Courses = () => {
         }
       );
 
-      console.log(result);
       const courseNames = result.data.courses.map(item => item.name).join(", ");
       setData(courseNames);
       setFlag(true);
