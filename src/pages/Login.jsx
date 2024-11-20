@@ -58,6 +58,8 @@ const Login = () => {
                 navigate("/InstructorDashboard");
               } else if (user_type === "student") {
                 navigate("/StudentDashboard");
+              } else if (user_type === "admin") {
+                navigate("/Admin");
               } else {
                 console.error("Unknown user type");
               }
