@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { logout } from "../utils/auth";
-import ManageStudents from "./ManageStudents";
+import Students from "./Students";
+import Instructors from "./Instructors";
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
@@ -66,11 +67,14 @@ const Admin = () => {
         return number;
     }
 
+    const students = users.filter(user => user.user_type === "student");
+    const instructors = users.filter(user => user.user_type === "instructor");
+
   return (
     <div>
       <h1>Admin Dashboard</h1>
       <button onClick={logout}>Logout</button>
-      <a href="/ManageStudents">manage students</a>
+      <a href="/Students">manage students</a>
 
       {error && <p className="error-message">{error}</p>}
       {loading ? (
@@ -115,7 +119,8 @@ const Admin = () => {
           </tbody>
         </table>
 
-        <ManageStudents />
+        <Students students={students || []} />
+        <Instructors instructors={instructors || []} />
 
         </>)}
     </div>

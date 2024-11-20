@@ -7,8 +7,6 @@ require "vendor/autoload.php";
 use Firebase\JWT\JWT;
 
 
-// it always decode
-// since we are getting the values stringified from the user
 $data = json_decode(file_get_contents("php://input"),true);
 
 $secretKey = "MyTopSecretKey";
