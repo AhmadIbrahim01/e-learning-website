@@ -4,6 +4,8 @@ import { useEffect } from "react";
 
 const Courses = () => {
 
+    const [data, setData] = useState("");
+    const [flag, setFlag] = useState(false);
 
   const getCourses = async () => {
     try {
@@ -16,7 +18,12 @@ const Courses = () => {
         }
       );
 
-      console.log(result.data);
+      console.log(result);
+      const courseNames = result.data.courses.map(item => item.name).join(", ");
+      setData(courseNames);
+      setFlag(true);
+      
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -31,6 +38,7 @@ const Courses = () => {
   return (
     <div>
         <h1>Courses</h1>
+        <h2>{flag ? data : "User has no courses"}</h2>
     </div>
   );
 };

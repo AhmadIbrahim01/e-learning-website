@@ -5,66 +5,73 @@ import Input from "../components/base/Input";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = ()=>{
+const Login = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  return (
+    <div className="flex login">
+      <div className="login-form flex column center">
+        <h1>Login</h1>
 
+        <Input
+          placeholder={"Email"}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+        />
 
-    return(
-        <div className="flex login">
-            <div className="login-form flex column center">
-                <h1>Login</h1>
+        <Input
+          placeholder={"Password"}
+          type="password"
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+        />
 
-                <Input placeholder={"Email"} onChange={(e)=>{
-                    setEmail(e.target.value);
-                }} />
-                
-                <Input placeholder={"Password"} onChange={(e)=>{
-                    setPassword(e.target.value);
-                }} />
-                
-                <Button text={"Login"} onClick={async ()=>{
+        <Button
+          text={"Login"}
+          onClick={async () => {
+            try {
+              const result = await axios.post(
+                "http://localhost/e-learning-website/server/api/login.php",
+                {
+                  email: email,
+                  password: password,
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
 
+              const { access_token } = result.data;
+              const user_type = result.data.message.user_type
+              console.log(result.data);
+              console.log(user_type);
+              
+              // Save the token in localStorage
+              localStorage.setItem("token", access_token);
 
-                    try{
-                        const result = await axios.post("http://localhost/e-learning-website/server/api/login.php",
-                        {
-                            email: email,
-                            password: password,
-                        },
-                        {
-                            headers:{
-                                "Content-Type": "application/json",
-                            },
-
-                        }
-                        );
-                        
-
-
-                        // console.log(result)
-                        // console.log(result.data)
-                        // console.log(result.data.access_token)
-
-                        // console.log(email,password)
-
-                        navigate("/courses");
-
-                        localStorage.setItem("token", result.data.access_token);
-
-                    } catch (error){
-                        console.log(error);
-                    }
-
-                }}/>
-            </div>
-            <div className="picture">
-                
-            </div>
-        </div>
-    )
-}
+              // Redirect based on user type
+              if (user_type === "instructor") {
+                navigate("/InstructorDashboard");
+              } else if (user_type === "student") {
+                navigate("/StudentDashboard");
+              } else {
+                console.error("Unknown user type");
+              }
+            } catch (error) {
+              console.error("Login failed:", error.response?.data || error.message);
+            }
+          }}
+        />
+      </div>
+      <div className="picture"></div>
+    </div>
+  );
+};
 
 export default Login;

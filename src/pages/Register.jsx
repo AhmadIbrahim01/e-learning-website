@@ -33,13 +33,17 @@ const Register = () => {
             },
         });
 
-            const result = response.data;
+            const result = response.data;            
+            const user_type = formData.user_type;
 
-            if (result.status === 'Successful') {
-            setStatus({ success: true, message: result.message });
-            navigate("/");
+            if (result.status === 'Successful' && user_type === "instructor") {
+              setStatus({ success: true, message: result.message });
+              navigate("/InstructorDashboard");
+            } else if (result.status === 'Successful' && user_type === "student"){
+              setStatus({ success: true, message: result.message });
+              navigate("/StudentDashboard");
             } else {
-            setStatus({ success: false, message: result.message });
+              setStatus({ success: false, message: result.message });
             }
         } catch (error) {
             setStatus({ success: false, message: 'An error occurred. Please try again.' });
