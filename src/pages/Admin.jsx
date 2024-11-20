@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { logout } from "../utils/auth";
-import Students from "./Students";
+import AllStudents from "./AllStudents";
 import Instructors from "./Instructors";
 import AllCourses from "./AllCourses";
 import AllUsers from "./AllUsers";
@@ -94,7 +94,7 @@ const Admin = () => {
 
         <AllAdmins admin={admins || []} />
         <br />
-        <Students students={students || []} />
+        <AllStudents students={students || []} />
         <br />
         <Instructors instructors={instructors || []} />
         <br />
