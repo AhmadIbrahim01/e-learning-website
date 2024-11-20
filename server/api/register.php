@@ -5,8 +5,7 @@ include "connection.php";
 $name = $_POST["name"];
 $email = $_POST["email"];
 $password = $_POST["password"];
-// $user_type = $_POST["user_type"];
-$user_type = "student";
+$user_type = $_POST["user_type"];
 
 $query = $connection->prepare("SELECT COUNT(*) FROM users WHERE email = ?");
 $query->bind_param("s", $email);

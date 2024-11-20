@@ -12,6 +12,7 @@ import StudentDashboard from './pages/StudentDashboard.jsx';
 import Admin from './pages/Admin.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import AllStudents from './pages/AllStudents.jsx';
+import AddInstructor from './pages/AddInstructor.jsx';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/AllStudents" element={<AllStudents />} />
+        <Route path="/AddInstructor" element={<AddInstructor />} />
         <Route path="/InstructorDashboard" element={
                       <ProtectedRoute allowedUserType="instructor">
                       <InstructorDashboard />

@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
+const AddInstructor = () => {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
-        user_type: 'student',
+        user_type: 'instructor',
     });
 
     const [status, setStatus] = useState(null);
@@ -54,9 +54,9 @@ const Register = () => {
 
 
     return (
-        <div className="flex register">
+        <div className="flex register center">
             <div className="register-form flex column center">
-                <h1>Register</h1>
+                <h1>Add Instructor</h1>
                 {status && status.message}
                 <form className='register-form flex center column' onSubmit={handleSubmit}>
                     <div>
@@ -108,13 +108,12 @@ const Register = () => {
                             <option value="instructor">Instructor</option>
                         </select> */}
                     </div>
-                    <button className='register-button' type="submit">Register</button>
+                    <button className='register-button' type="submit">Add Instructor</button>
                 </form>
-                <p>Already have an account? <span><a href="/login">Login</a></span></p>
             </div>
-            <div className="register-picture"></div>
+            {/* <div className="register-picture"></div> */}
         </div>
     );
 };
 
-export default Register;
+export default AddInstructor;
