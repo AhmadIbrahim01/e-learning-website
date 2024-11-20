@@ -68,8 +68,10 @@ const Login = () => {
             }
           }}
         />
+        <p>Don't have an account? <span><a href="/register">Sign Up</a></span></p>
+
       </div>
-      <div className="picture"></div>
+      <div className="login-picture"></div>
     </div>
   );
 };

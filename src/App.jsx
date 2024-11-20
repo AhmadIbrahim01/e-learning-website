@@ -9,6 +9,7 @@ import Home from './pages/Home.jsx';
 import Courses from './pages/Courses.jsx';
 import InstructorDashboard from './pages/InstructorDashboard.jsx';
 import StudentDashboard from './pages/StudentDashboard.jsx';
+import Admin from './pages/Admin.jsx';
 
 
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="/courses" element={<Courses />} />
         <Route path="/InstructorDashboard" element={<InstructorDashboard />} />
         <Route path="/StudentDashboard" element={<StudentDashboard />} />
+        <Route path="/Admin" element={<Admin />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </Router>

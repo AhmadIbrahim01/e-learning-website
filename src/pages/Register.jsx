@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Button from "../components/base/Button";
+import Input from "../components/base/Input";
 
 const Register = () => {
 
     const navigate = useNavigate();
+    
 
     const [formData, setFormData] = useState({
         name: '',
@@ -51,66 +54,72 @@ const Register = () => {
     };
 
   return (
-    <div className="register-container">
-      <h2>Register</h2>
-      {status && (
-        <div className={`status-message ${status.success ? 'success' : 'error'}`}>
-          {status.message}
-        </div>
-      )}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name:</label>
+    <div className="flex register">
+        <div className="register-form flex column center">
+            <h1>Register</h1>
+            {status && (
+                <div className={`status-message ${status.success ? 'success' : 'error'}`}>
+                    {status.message}
+                </div>
+            )}
+            <form className='register-form flex center column' onSubmit={handleSubmit}>
+                <div>
+                    
 
+                    <input
+                        className='input'
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        placeholder="Name"
+                        required
+                        />
+                </div>
+                <div>
+                    <input
+                        className='input'
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="Email"
+                        required
+                        />
+                </div>
+                <div>
+                    <input
+                        className='input'
+                        type="password"
+                        id="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        placeholder="Password"
+                        required
+                    />
+                </div>
+                <div>
+                    <select
+                        id="user_type"
+                        name="user_type"
+                        value={formData.user_type}
+                        onChange={handleChange}
+                        className="styled-select"
+                        required
+                    >
+                    <option value="student">Student</option>
+                    <option value="instructor">Instructor</option>
+                </select>
+                </div>
+                <button className='register-button' type="submit">Register</button>
+            </form>
+            <p>Already have an account? <span><a href="/login">Login</a></span></p>
+        </div>
+        <div className="register-picture"></div>
 
-
-
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="user_type">User Type:</label>
-          <select
-            id="user_type"
-            name="user_type"
-            value={formData.user_type}
-            onChange={handleChange}
-            required
-          >
-            <option value="student">Student</option>
-            <option value="instructor">Instructor</option>
-          </select>
-        </div>
-        <button type="submit">Register</button>
-      </form>
     </div>
   );
 };
