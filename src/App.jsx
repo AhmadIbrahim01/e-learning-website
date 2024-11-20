@@ -22,8 +22,16 @@ function App() {
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register />} />
         <Route path="/courses" element={<Courses />} />
-        <Route path="/AllStudents" element={<AllStudents />} />
-        <Route path="/AddInstructor" element={<AddInstructor />} />
+        <Route path="/AllStudents" element={
+                      <ProtectedRoute allowedUserType="admin">
+                      <AllStudents />
+                    </ProtectedRoute>
+        } />
+        <Route path="/AddInstructor" element={
+                      <ProtectedRoute allowedUserType="admin">
+                      <AddInstructor />
+                    </ProtectedRoute>
+        } />
         <Route path="/InstructorDashboard" element={
                       <ProtectedRoute allowedUserType="instructor">
                       <InstructorDashboard />
