@@ -3,12 +3,16 @@ import axios from "axios";
 import { logout } from "../utils/auth";
 import Students from "./Students";
 import Instructors from "./Instructors";
+import AllCourses from "./AllCourses";
+import AllUsers from "./AllUsers";
+import AllAdmins from "./AllAdmins";
 
 const Admin = () => {
-  const [users, setUsers] = useState([]);
-  const [courses_count, setCoursesCount] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const [users, setUsers] = useState([]);
+    const [courses, setCourses] = useState([]);
+    const [courses_count, setCoursesCount] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -16,7 +20,6 @@ const Admin = () => {
         const response = await axios.get("http://localhost/e-learning-website/server/api/getUsers.php");
         
         if (response.data.status === "success") {
-          console.log("usrs", response.data.data);
           setUsers(response.data.data);
         } else {
           setError(response.data.message || "An error occurred while fetching users.");
@@ -35,9 +38,7 @@ const Admin = () => {
         
         if (courses_response.data.status === "success") {
           setCoursesCount(count(courses_response.data.data));
-          console.log(count(courses_response.data.data));
-          console.log(courses_response.data);
-          
+          setCourses(courses_response.data.data);
         } else {
           setError(courses_response.data.message || "An error occurred while fetching users.");
         }
@@ -69,6 +70,7 @@ const Admin = () => {
 
     const students = users.filter(user => user.user_type === "student");
     const instructors = users.filter(user => user.user_type === "instructor");
+    const admins = users.filter(user => user.user_type === "admin");
 
   return (
     <div>
@@ -90,39 +92,18 @@ const Admin = () => {
         <h1>Banned Instructors: {bannedCount(users, "instructor")}</h1>
         <h1>Banned Students: {bannedCount(users, "student")}</h1>
 
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>User Type</th>
-              <th>Is Banned</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.length > 0 ? (
-              users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.id}</td>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>{user.user_type}</td>
-                  <td>{user.is_banned === "1"? "Yes" : "No"}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5">No users found</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-
+        <AllAdmins admin={admins || []} />
+        <br />
         <Students students={students || []} />
+        <br />
         <Instructors instructors={instructors || []} />
+        <br />
+        <AllCourses courses={courses || []} />
+        <br />
+        <AllUsers users={users || []} />
 
-        </>)}
+</>
+    )}
     </div>
   );
 };
