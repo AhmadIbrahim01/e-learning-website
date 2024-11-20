@@ -1,77 +1,57 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const AllCourses = ({ courses = [] }) => {
+const AllCourses = ({ courses = [], setCourses }) => {
+  const [editingCourse, setEditingCourse] = useState(null);
   const [courseName, setCourseName] = useState("");
   const [courseDescription, setCourseDescription] = useState("");
-  const [message, setMessage] = useState("");
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleEditClick = (course) => {
+    setEditingCourse(course);
+    setCourseName(course.course_name);
+    setCourseDescription(course.course_description);
+  };
 
-    if (!courseName || !courseDescription) {
-      setMessage("Please fill out both fields.");
-      return;
-    }
+  const handleCourseUpdate = async (e) => {
+    e.preventDefault();
 
     try {
       const response = await axios.post(
-        "http://localhost/e-learning-website/server/api/createCourse.php",
+        "http://localhost/e-learning-website/server/api/editCourse.php",
         {
+          course_id: editingCourse.id,
           course_name: courseName,
           course_description: courseDescription,
         }
       );
 
       if (response.data.status === "success") {
-        setMessage("Course added successfully!");
-        setCourseName("");
-        setCourseDescription("");
+        const updatedCourses = courses.map((course) =>
+          course.id === editingCourse.id
+            ? { ...course, course_name: courseName, course_description: courseDescription }
+            : course
+        );
+        setCourses(updatedCourses);
+        setEditingCourse(null);
       } else {
-        setMessage("Failed to add course: " + response.data.message);
+        alert("Failed to update course");
       }
-    } catch (error) {
-      setMessage("Error: " + error.message);
+    } catch (err) {
+      console.error("Error updating course:", err);
+      alert("Error updating course");
     }
   };
 
   return (
     <div>
       <h2>All Courses</h2>
-
-      <h3>Add a New Course</h3>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="courseName">Course Name:</label>
-          <input
-            type="text"
-            id="courseName"
-            value={courseName}
-            onChange={(e) => setCourseName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="courseDescription">Course Description:</label>
-          <textarea
-            id="courseDescription"
-            value={courseDescription}
-            onChange={(e) => setCourseDescription(e.target.value)}
-            required
-          ></textarea>
-        </div>
-        <button type="submit">Add Course</button>
-      </form>
-
-      {message && <p>{message}</p>}
-
-      <h3>Existing Courses</h3>
       <table>
         <thead>
           <tr>
             <th>ID</th>
             <th>Course Name</th>
             <th>Course Description</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -81,15 +61,50 @@ const AllCourses = ({ courses = [] }) => {
                 <td>{course.id}</td>
                 <td>{course.course_name}</td>
                 <td>{course.course_description}</td>
+                <td>
+                  <button onClick={() => handleEditClick(course)}>Edit</button>
+                </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="3">No courses found</td>
+              <td colSpan="4">No courses found</td>
             </tr>
           )}
         </tbody>
       </table>
+
+      {editingCourse && (
+        <div className="modal">
+          <h3>Edit Course</h3>
+          <form onSubmit={handleCourseUpdate}>
+            <div>
+              <label>Course Name</label>
+              <input
+                type="text"
+                value={courseName}
+                onChange={(e) => setCourseName(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label>Course Description</label>
+              <textarea
+                value={courseDescription}
+                onChange={(e) => setCourseDescription(e.target.value)}
+                required
+              ></textarea>
+            </div>
+            <button type="submit">Save Changes</button>
+            <button
+              type="button"
+              onClick={() => setEditingCourse(null)}
+            >
+              Cancel
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   );
 };
