@@ -4,6 +4,7 @@ import { logout } from "../utils/auth";
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
+  const [courses_count, setCoursesCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -13,6 +14,7 @@ const Admin = () => {
         const response = await axios.get("http://localhost/e-learning-website/server/api/getUsers.php");
         
         if (response.data.status === "success") {
+          console.log("usrs", response.data.data);
           setUsers(response.data.data);
         } else {
           setError(response.data.message || "An error occurred while fetching users.");
@@ -25,13 +27,40 @@ const Admin = () => {
     };
 
     fetchUsers();
+    const fetchCourses = async () => {
+      try {
+        const courses_response = await axios.get("http://localhost/e-learning-website/server/api/getAllCourses.php");
+        
+        if (courses_response.data.status === "success") {
+          setCoursesCount(count(courses_response.data.data));
+          console.log(count(courses_response.data.data));
+          console.log(courses_response.data);
+          
+        } else {
+          setError(courses_response.data.message || "An error occurred while fetching users.");
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
   }, []);
 
 
     const count = (users, type) =>{
         let number = 0;
         users.forEach(user => {
-            if(user.user_type == type) number += 1;
+            if(user.user_type === type) number += 1;
+        })
+        return number;
+    }
+    const bannedCount = (users, type) =>{
+        let number = 0;
+        users.forEach(user => {
+            if(user.user_type === type && user.is_banned === "1") number += 1;
         })
         return number;
     }
@@ -51,6 +80,9 @@ const Admin = () => {
         <h1>Number of students: {count(users, "student")}</h1>
         <h1>Number of admins: {count(users, "admin")}</h1>
         <h1>Number of instructors: {count(users, "instructor")}</h1>
+        <h1>Number of courses: {courses_count}</h1>
+        <h1>Banned Instructors: {bannedCount(users, "instructor")}</h1>
+        <h1>Banned Students: {bannedCount(users, "student")}</h1>
 
         <table>
           <thead>
@@ -70,7 +102,7 @@ const Admin = () => {
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>{user.user_type}</td>
-                  <td>{user.is_banned == 1? "Yes" : "No"}</td>
+                  <td>{user.is_banned === "1"? "Yes" : "No"}</td>
                 </tr>
               ))
             ) : (

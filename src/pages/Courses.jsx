@@ -1,16 +1,14 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const Courses = () => {
-
-    const [data, setData] = useState("");
-    const [flag, setFlag] = useState(false);
+  const [data, setData] = useState([]);
+  const [flag, setFlag] = useState(false);
 
   const getCourses = async () => {
     try {
       const result = await axios.get(
-        "http://localhost/e-learning-website/server/api/getUserCourses.php",
+        "http://localhost/e-learning-website/server/api/getCourses.php",
         {
           headers: {
             Authorization: localStorage.token,
@@ -18,26 +16,51 @@ const Courses = () => {
         }
       );
 
-      const courseNames = result.data.courses.map(item => item.name).join(", ");
-      setData(courseNames);
-      setFlag(true);
-      
-      console.log(data);
+      if (result.data.status === "success" && result.data.data.length > 0) {
+        setData(result.data.data);
+        setFlag(true);
+      } else {
+        setFlag(false);
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching courses:", error);
+      setFlag(false);
     }
   };
 
   useEffect(() => {
     getCourses();
-
-    console.log("Here");
   }, []);
 
   return (
     <div>
-        <h1>Courses</h1>
-        <h2>{flag ? data : "User has no courses"}</h2>
+      <h1>Courses</h1>
+      {flag ? (
+        <div>
+          {data.map((user) => (
+            <div key={user.id}>
+              
+              {user.courses.length > 0 ? (
+                <>
+                <h2>{user.name} ({user.user_type})</h2>
+                <ul>
+                  {user.courses.map((course) => (
+                    <li key={course.id}>
+                      <strong>{course.name}</strong>: {course.description}
+                    </li>
+                  ))}
+                </ul>
+                </>
+
+              ) : (
+                null
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <h2>No data available or user has no courses</h2>
+      )}
     </div>
   );
 };
