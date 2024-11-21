@@ -1,44 +1,32 @@
 <?php
+header("Content-Type: application/json");
 
-    include "connection.php";
-    require "vendor/autoload.php";
+include "connection.php";
 
-    use Firebase\JWT\JWT;
-    use Firebase\JWT\Key;
+$student_id = isset($_GET['student_id']) ? intval($_GET['student_id']) : 0;
 
-    $secretKey = "MyTopSecretKey";
-    $headers = getallheaders();
-    $jwt = $headers["Authorization"];
-
-    $key = new Key($secretKey, "HS256");
-    $payload = JWT::decode($jwt, $key);
-
-    $id = $payload->userId;
-
-    $query = $connection->prepare("SELECT * FROM courses WHERE user_id = ?");
-    $query->bind_param("i", $id);
-    $query->execute();
-
-    $result = $query->get_result();
-
-    if($result->num_rows != 0) {
-        $courses = [];
-
-        while($course = $result->fetch_assoc()) {
-            $courses[] = $course;
-        }
-
-        http_response_code(200);
-
-        echo json_encode([
-            "message" => "Courses retrieved successfully",
-            "courses" => $courses,
-        ]);
-
-    } else {
-        http_response_code(404);
-
-        echo json_encode([
-            "message" => "User has no courses"
-        ]);
+if ($student_id <= 0) {
+    echo json_encode(["success" => false, "message" => "Invalid student ID."]);
+    exit;
 }
+
+$sql = "SELECT all_courses.course_name, all_courses.course_description 
+        FROM student_courses 
+        INNER JOIN all_courses ON student_courses.course_id = all_courses.id 
+        WHERE student_courses.student_id = ?";
+
+$query = $connection->prepare($sql);
+$query->bind_param("i", $student_id);
+$query->execute();
+$result = $query->get_result();
+
+$courses = [];
+while ($row = $result->fetch_assoc()) {
+    $courses[] = $row;
+}
+
+$query->close();
+$connection->close();
+
+echo json_encode(["success" => true, "data" => $courses]);
+?>

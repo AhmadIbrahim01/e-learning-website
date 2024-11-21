@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { logout } from "../utils/auth";
 import StudentPage from "./StudentPage";
-
+import StudentCourses from "./studentCourses";
 const StudentDashboard = ()=>{
     const [email, setEmail] = useState("");
     const [id, setId] = useState("");
@@ -22,6 +22,7 @@ const StudentDashboard = ()=>{
             <p>Your ID: {id}</p>
             <button onClick={logout}>Logout</button>
             {/* <StudentPage email={storedEmail} id={storedId}/> */}
+            <StudentCourses/>
             <StudentPage/>
         </div>
     )
