@@ -47,12 +47,13 @@ const Login = () => {
                 }
               );
 
-              const { access_token } = result.data;
-              const user_type = result.data.message.user_type;
-              console.log(result.data);
-              console.log(user_type);
-              
+              const { access_token, message } = result.data;
+              const { user_type, id } = message;
+
+              // Save email and id to localStorage
               localStorage.setItem("token", access_token);
+              localStorage.setItem("email", email);
+              localStorage.setItem("id", id);
 
               if (user_type === "instructor") {
                 navigate("/InstructorDashboard");
@@ -71,15 +72,16 @@ const Login = () => {
             }
           }}
         />
-        
+
         {errorMessage && (
           <p className="error-message" style={{ color: "red", marginTop: "10px" }}>
             {errorMessage}
           </p>
         )}
 
-        <p>Don't have an account? <span><a href="/register">Sign Up</a></span></p>
-
+        <p>
+          Don't have an account? <span><a href="/register">Sign Up</a></span>
+        </p>
       </div>
       <div className="login-picture"></div>
     </div>

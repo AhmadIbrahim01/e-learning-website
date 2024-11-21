@@ -13,6 +13,7 @@ import Admin from './pages/Admin.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import AllStudents from './pages/AllStudents.jsx';
 import AddInstructor from './pages/AddInstructor.jsx';
+import StudentPage from './pages/StudentPage.jsx';
 
 function App() {
   return (
@@ -22,6 +23,11 @@ function App() {
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register />} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/StudentPage" element={
+                      <ProtectedRoute allowedUserType="student">
+                      <StudentPage />
+                    </ProtectedRoute>
+        } />
         <Route path="/AllStudents" element={
                       <ProtectedRoute allowedUserType="admin">
                       <AllStudents />

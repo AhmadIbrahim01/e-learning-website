@@ -20,5 +20,8 @@ export const getUserType = () => {
 
 export const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("id");
     window.location.href = "/login";
   };
+  
