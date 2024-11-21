@@ -110,10 +110,10 @@ const AllCourses = ({ courses = [], setCourses }) => {
 
   return (
     <div>
-      <h2>All Courses</h2>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
       {message && <p>{message}</p>}
+
 
       <h3>Add a New Course</h3>
       <form onSubmit={handleSubmit}>
@@ -138,6 +138,8 @@ const AllCourses = ({ courses = [], setCourses }) => {
         </div>
         <button type="submit">Add Course</button>
       </form>
+      
+      <h2>All Courses</h2>
 
       <table>
         <thead>

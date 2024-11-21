@@ -6,6 +6,7 @@ import Instructors from "./Instructors";
 import AllCourses from "./AllCourses";
 import AllUsers from "./AllUsers";
 import AllAdmins from "./AllAdmins";
+import './Admin.css';
 
 const Admin = () => {
     const [users, setUsers] = useState([]);
@@ -73,37 +74,58 @@ const Admin = () => {
     const admins = users.filter(user => user.user_type === "admin");
 
   return (
-    <div>
+    <div className="dashboard-container">
       <h1>Admin Dashboard</h1>
       <button onClick={logout}>Logout</button>
-      <a href="/Students">manage students</a>
+      <a href="/Students">Manage students</a>
 
       {error && <p className="error-message">{error}</p>}
       {loading ? (
         <p>Loading users...</p>
       ) : (
-<>
-        <h1>Stats:</h1>
-        <h1>Number of users: {users.length}</h1>
-        <h1>Number of students: {count(users, "student")}</h1>
-        <h1>Number of admins: {count(users, "admin")}</h1>
-        <h1>Number of instructors: {count(users, "instructor")}</h1>
-        <h1>Number of courses: {courses_count}</h1>
-        <h1>Banned Instructors: {bannedCount(users, "instructor")}</h1>
-        <h1>Banned Students: {bannedCount(users, "student")}</h1>
+        <>
+          <div className="dashboard-stats">
+            <div className="stats-item">
+              <h1>Number of users</h1>
+              <p>{users.length}</p>
+            </div>
+            <div className="stats-item">
+              <h1>Number of students</h1>
+              <p>{count(users, "student")}</p>
+            </div>
+            <div className="stats-item">
+              <h1>Number of admins</h1>
+              <p>{count(users, "admin")}</p>
+            </div>
+            <div className="stats-item">
+              <h1>Number of instructors</h1>
+              <p>{count(users, "instructor")}</p>
+            </div>
+            <div className="stats-item">
+              <h1>Number of courses</h1>
+              <p>{courses_count}</p>
+            </div>
+            <div className="stats-item">
+              <h1>Banned Instructors</h1>
+              <p>{bannedCount(users, "instructor")}</p>
+            </div>
+            <div className="stats-item">
+              <h1>Banned Students</h1>
+              <p>{bannedCount(users, "student")}</p>
+            </div>
+          </div>
 
-        <AllAdmins admin={admins || []} />
-        <br />
-        <AllStudents students={students || []} />
-        <br />
-        <Instructors instructors={instructors || []} />
-        <br />
-        <AllCourses courses={courses || []} />
-        <br />
-        <AllUsers users={users || []} />
-
-</>
-    )}
+          <AllAdmins admin={admins || []} />
+          <br />
+          <AllStudents students={students || []} />
+          <br />
+          <Instructors instructors={instructors || []} />
+          <br />
+          <AllCourses courses={courses || []} />
+          <br />
+          <AllUsers users={users || []} />
+        </>
+      )}
     </div>
   );
 };
